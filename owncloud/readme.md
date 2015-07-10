@@ -1,10 +1,10 @@
-# ownCloud
+# [ownCloud](https://owncloud.org/) - A personal cloud which runs on your own server
 
 IMPORTANT: there are two packages here:
-* webserver-apps/owncloud-installed
-* webserver-apps/owncloud-php-fpm
+* nazarpc/webserver-apps:owncloud-installed
+* nazarpc/webserver-apps:owncloud-php-fpm
 
-Use `webserver-apps/owncloud-php-fpm` instead of `webserver/php-fpm` in your `docker-compose.yml` because:
+IMPORTANT: use `nazarpc/webserver-apps:owncloud-php-fpm` instead of `nazarpc/webserver:php-fpm` in your `docker-compose.yml` because:
 * it additionally contains MySQL extension since ownCloud doesn't support neither MySQLi nor PDO
 * also it contains pre-installed LibreOffice, which is required for Documents app for MSO documents support
 
@@ -25,4 +25,4 @@ cd /example.com
 docker run --rm -it --volumes-from example.com --link example_com_db_1:mysql -v /ssl.crt:/dist/crt -v /ssl.key:/dist/key nazarpc/webserver-apps:owncloud-installer
 docker-compose restart db nginx
 ```
-It is similar to previous with addition of SSL/TLS keys, heeded for HTTPS  connection, just replace `/ssl.crt` and `/ssl.key` with actual paths to appropriate files on server
+It is similar to previous with addition of SSL/TLS keys, needed for HTTPS  connection, just replace `/ssl.crt` and `/ssl.key` with actual paths to appropriate files on server
