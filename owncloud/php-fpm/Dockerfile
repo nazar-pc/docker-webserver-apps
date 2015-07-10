@@ -19,4 +19,12 @@ RUN mv /usr/local/etc_dist /usr/local/etc && \
 
 # And revert permissions changes
 
-	chown -R git:git /usr/local/etc_dist
+	chown -R git:git /usr/local/etc_dist && \
+
+# We'll libreoffice for Documents app
+
+	apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install --no-install-recommends -y libreoffice && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
