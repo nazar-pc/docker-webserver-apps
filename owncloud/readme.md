@@ -1,7 +1,7 @@
 # [ownCloud](https://owncloud.org/) - A personal cloud which runs on your own server
 
 IMPORTANT: there are two packages here:
-* nazarpc/webserver-apps:owncloud-installed
+* nazarpc/webserver-apps:owncloud-installer
 * nazarpc/webserver-apps:owncloud-php-fpm
 
 IMPORTANT: use `nazarpc/webserver-apps:owncloud-php-fpm` instead of `nazarpc/webserver:php-fpm` in your `docker-compose.yml` because:
