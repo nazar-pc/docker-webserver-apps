@@ -1,28 +1,107 @@
 # [ownCloud](https://owncloud.org/) - A personal cloud which runs on your own server
 
-IMPORTANT: there are two packages here:
-* nazarpc/webserver-apps:owncloud-installer
-* nazarpc/webserver-apps:owncloud-php-fpm
+There are two packages here:
+* nazarpc/webserver-apps:owncloud-installer - One-time ownCloud installer
+* nazarpc/webserver-apps:owncloud-php-fpm - Modified nazarpc/webserver:php-fpm with MySQL and LibreOffice
 
-IMPORTANT: use `nazarpc/webserver-apps:owncloud-php-fpm` instead of `nazarpc/webserver:php-fpm` in your `docker-compose.yml` because:
-* it additionally contains MySQL extension since ownCloud doesn't support neither MySQLi nor PDO
-* also it contains pre-installed LibreOffice, which is required for Documents app for MSO documents support
+Create directory for your website, it will contain `docker-compose.yml` file and potentially more files you'll need:
+```
+mkdir example.com
+cd example.com
+```
 
-### HTTP connection:
-```
-cd /example.com
-docker run --rm -it --volumes-from example.com --link examplecom_db_1:mysql nazarpc/webserver-apps:owncloud-installer
-docker-compose restart db nginx
-```
-Were:
-* `/example.com` is directory where `docker-compose.yml` is located
-* `--volumes-from example.com` means that `example.com` is your data-only container
-* `--link examplecom_db_1:mysql` means that `examplecom_db_1` is database container created by `docker-compose`
+Now create `docker-compose.yml` inside with following contents:
 
-### If you plan to have HTTPS connection, use following command instead:
+```yml
+cron:
+  image: nazarpc/webserver-apps:owncloud-php-fpm
+  environment:
+    - TERM=xterm
+  working_dir: /data/nginx/www/owncloud
+  command: watch --no-title --interval 600 "test ! -f config/autoconfig.php && su git -c 'php occ background:cron' && su git -c 'php -f cron.php > /dev/null 2>&1'"
+  links:
+    - mariadb:mysql
+  restart: always
+  volumes_from:
+    - data
+
+data:
+  image: nazarpc/webserver:data
+  volumes_from:
+    - example.com
+
+logrotate:
+  image: nazarpc/webserver:logrotate
+  restart: always
+  volumes_from:
+    - data
+
+mariadb:
+  image: nazarpc/webserver:mariadb
+  restart: always
+  volumes_from:
+    - data
+
+nginx:
+  image: nazarpc/webserver:nginx
+  links:
+    - php
+#  ports:
+#    - {ip where to bind}:{port on localhost where to bind}:80
+  restart: always
+  volumes_from:
+    - data
+
+# NOTE: this container is needed only once, so you can remove or comment-out it after installation
+installer:
+  image: nazarpc/webserver-apps:owncloud-installer
+  links:
+    - mariadb:mysql
+  volumes_from:
+    - data
+# Uncomment following lines for HTTPS setup, correct /ssl.crt and /ssl.key accordingly to your full paths to SSL/TLS certificates on host
+#  volumes:
+#    - /ssl.crt:/dist/crt:ro
+#    - /ssl.key:/dist/key:ro
+
+# NOTE: we use modified image based on nazarpc/webserver:php-fpm with MySQL extension and LibreOffice pre-installed
+php:
+  image: nazarpc/webserver-apps:owncloud-php-fpm
+  links:
+    - mariadb:mysql
+  restart: always
+  volumes_from:
+    - data
+
+#phpmyadmin:
+#  image: nazarpc/phpmyadmin
+#  links:
+#    - mariadb:mysql
+#  restart: always
+#  ports:
+#    - {ip where to bind}:{port on localhost where to bind}:80
+
+ssh:
+  image: nazarpc/webserver:ssh
+  restart: always
+  volumes_from:
+    - data
+#  ports:
+#    - {ip where to bind}:{port on localhost where to bind}:22
 ```
-cd /example.com
-docker run --rm -it --volumes-from example.com --link example_com_db_1:mysql -v /ssl.crt:/dist/crt -v /ssl.key:/dist/key nazarpc/webserver-apps:owncloud-installer
-docker-compose restart db nginx
+
+Now customize it as you like.
+
+When you're done with editing:
 ```
-It is similar to previous with addition of SSL/TLS keys, needed for HTTPS  connection, just replace `/ssl.crt` and `/ssl.key` with actual paths to appropriate files on server
+docker-compose up -d
+docker-compose restart mariadb nginx
+```
+
+Restart is needed to apply changed MariaDB and Nginx configurations, done by installer.
+
+Now go to Web UI, enter login and password for ownCloud administrator.
+That is it, you have ownCloud up and running.
+
+Go to [WebServer repository](https://github.com/nazar-pc/docker-webserver) for details about backups, upgrade process and other things since they are the same (do not forget that here we use more packages and different set of them, so you to pull all images accordingly).
+ownCloud itself can be upgraded from Web UI or through CLI, follow official guide according to your ownCloud version.
