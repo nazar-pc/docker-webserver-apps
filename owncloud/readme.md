@@ -2,7 +2,7 @@
 
 There are two packages here:
 * nazarpc/webserver-apps:owncloud-installer - One-time ownCloud installer
-* nazarpc/webserver-apps:owncloud-php-fpm - Modified nazarpc/webserver:php-fpm with MySQL and LibreOffice
+* nazarpc/webserver-apps:owncloud-php-fpm - Modified nazarpc/webserver:php-fpm with MySQL extension and LibreOffice
 
 Create directory for your website, it will contain `docker-compose.yml` file and potentially more files you'll need:
 ```
