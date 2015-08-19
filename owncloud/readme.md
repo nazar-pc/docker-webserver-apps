@@ -105,3 +105,23 @@ That is it, you have ownCloud up and running.
 
 Go to [WebServer repository](https://github.com/nazar-pc/docker-webserver) for details about backups, upgrade process and other things since they are the same (do not forget that here we use more packages and different set of them, so you to pull all images accordingly).
 ownCloud itself can be upgraded from Web UI or through CLI, follow official guide according to your ownCloud version.
+
+# ownCloud upgrade
+When you want to upgrade ownCloud you'll need to relax permissions since they are intentionally strict for production installation.
+So, before upgrade enter any of containers as root user from terminal on server, for instance, in such way:
+```bash
+docker exec -it examplecom_php_1 bash
+```
+
+Afterwards relax permissions temporary:
+```bash
+sh /data/nginx/www/owncloud/relax-permissions.sh
+```
+
+Upgrade your instance in any way (from administration interface, for instance).
+After upgrade apply strict permissions again:
+```bash
+sh /data/nginx/www/owncloud/strict-permissions.sh
+```
+
+That is it!

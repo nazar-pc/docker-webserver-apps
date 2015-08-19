@@ -24,7 +24,8 @@ RUN OWNCLOUD_VERSION=8.1.1 && \
 
 COPY mysql.cnf /dist/mysql.cnf
 COPY nginx.conf /dist/nginx.conf
-COPY fix-permissions.sh /dist/fix-permissions.sh
+COPY strict-permissions.sh /dist/owncloud/strict-permissions.sh
+COPY relax-permissions.sh /dist/owncloud/relax-permissions.sh
 COPY autoconfig.php /dist/owncloud/config/autoconfig.php
 
 # At first we'll check if ownCloud already installed, if so - stop everything
@@ -60,7 +61,7 @@ CMD test ! -d /data/nginx/www/owncloud && \
 
 # Fix permissions as recommended by ownCloud
 
-	sh /dist/fix-permissions.sh && \
+	sh /data/nginx/www/owncloud/strict-permissions.sh && \
 
 # Create DB table
 
