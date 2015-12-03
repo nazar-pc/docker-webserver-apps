@@ -1,17 +1,19 @@
 FROM nazarpc/webserver:php-fpm
 MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
-# Rename PHP-FPM config directory to original name to allow module installation
+RUN \
 
-RUN mv /usr/local/etc_dist /usr/local/etc && \
+# Copy PHP-FPM configs to original name to allow module installation
+
+	cp -a /usr/local/etc_dist/* /usr/local/etc/ && \
 
 # Install MySQL extension
 
 	docker-php-ext-install mysql && \
 
-# Rename PHP-FPM config directory back
+# Copy PHP-FPM configs back
 
-	mv /usr/local/etc /usr/local/etc_dist && \
+	cp -a /usr/local/etc/* /usr/local/etc_dist/ && \
 
 # Fix permissions for new files
 
