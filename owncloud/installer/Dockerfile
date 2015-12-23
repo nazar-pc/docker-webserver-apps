@@ -3,7 +3,7 @@ MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 # Set desired ownCloud version
 
-RUN OWNCLOUD_VERSION=8.2.1 && \
+RUN OWNCLOUD_VERSION=8.2.2 && \
 
 # We'll need bzip2 to extract downloaded ownCloud distributive and mysql-client to create DB
 
