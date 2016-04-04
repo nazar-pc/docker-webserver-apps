@@ -32,6 +32,14 @@ COPY autoconfig.php /dist/owncloud/config/autoconfig.php
 
 CMD test ! -d /data/nginx/www/owncloud && \
 
+# Wait for Nginx container to initialize
+
+	while test ! -d /data/nginx; do sleep 1; done && \
+
+# Wait for MariaDB container to start
+
+	while ! mysqladmin --host=mysql --user=root --password=`cat /data/mysql/root_password` ping; do sleep 1; done && \
+
 # Copy default Nginx config
 
 	cp /dist/nginx.conf /data/nginx/config/conf.d/default.conf && \

@@ -5,7 +5,14 @@ There are two packages here:
 * nazarpc/webserver-apps:owncloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with MySQL extension and LibreOffice
 * nazarpc/webserver-apps:owncloud-cron - `nazarpc/webserver-apps:owncloud-php-fpm` with defaults to run ownCloud cron command every 10 minutes
 
-Create directory for your website, it will contain `docker-compose.yml` file and potentially more files you'll need:
+
+At first you'll need to create persistent data-only container that will store all files, databases, ssh keys and settings of all these things:
+```
+docker run --name example.com nazarpc/webserver:data
+```
+This container will start and stop immediately, that is OK.
+
+After this create directory for your website, it will contain docker-compose.yml file and potentially more files you'll need:
 ```
 mkdir example.com
 cd example.com
