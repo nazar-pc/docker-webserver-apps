@@ -2,7 +2,8 @@
 
 There are two packages here:
 * nazarpc/webserver-apps:owncloud-installer - One-time ownCloud installer
-* nazarpc/webserver-apps:owncloud-php-fpm - Modified nazarpc/webserver:php-fpm with MySQL extension and LibreOffice
+* nazarpc/webserver-apps:owncloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with MySQL extension and LibreOffice
+* nazarpc/webserver-apps:owncloud-cron - `nazarpc/webserver-apps:owncloud-php-fpm` with defaults to run ownCloud cron command every 10 minutes
 
 Create directory for your website, it will contain `docker-compose.yml` file and potentially more files you'll need:
 ```
@@ -14,11 +15,7 @@ Now create `docker-compose.yml` inside with following contents:
 
 ```yml
 cron:
-  image: nazarpc/webserver-apps:owncloud-php-fpm
-  environment:
-    - TERM=xterm
-  working_dir: /data/nginx/www/owncloud
-  command: watch --no-title --interval 600 "test ! -f config/autoconfig.php && su git -c 'php occ background:cron' && su git -c 'php -f cron.php > /dev/null 2>&1'"
+  image: nazarpc/webserver-apps:owncloud-cron
   links:
     - mariadb:mysql
   restart: always
