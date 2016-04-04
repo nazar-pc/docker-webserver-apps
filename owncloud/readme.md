@@ -99,6 +99,10 @@ Now customize it as you like.
 When you're done with editing:
 ```
 docker-compose up -d
+docker-compose logs installer
+```
+As soon as you see message that ownCloud was installed, reboot mariadb and nginx to apply configuration changes:
+```
 docker-compose restart mariadb nginx
 ```
 
@@ -119,13 +123,13 @@ docker exec -it examplecom_php_1 bash
 
 Afterwards relax permissions temporary:
 ```bash
-sh /data/nginx/www/owncloud/relax-permissions.sh
+sh /data/nginx/www/relax-permissions.sh
 ```
 
 Upgrade your instance in any way (from administration interface, for instance).
 After upgrade apply strict permissions again:
 ```bash
-sh /data/nginx/www/owncloud/strict-permissions.sh
+sh /data/nginx/www/strict-permissions.sh
 ```
 
 That is it!

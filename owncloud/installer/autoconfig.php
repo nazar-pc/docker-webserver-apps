@@ -1,6 +1,6 @@
 <?php
 $AUTOCONFIG = [
-	'directory'      => '/data/nginx/www/owncloud/data',
+	'directory'      => '/data/nginx/www/data',
 	'dbtype'         => 'mysql',
 	'dbname'         => 'owncloud',
 	'dbhost'         => 'mysql',

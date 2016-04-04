@@ -1,5 +1,5 @@
 #!/bin/bash
-ocpath='/data/nginx/www/owncloud'
+ocpath='/data/nginx/www'
 htuser='git'
 htgroup='git'
 

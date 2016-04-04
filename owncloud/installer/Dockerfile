@@ -30,15 +30,17 @@ COPY autoconfig.php /dist/owncloud/config/autoconfig.php
 
 # At first we'll check if ownCloud already installed, if so - stop everything
 
-CMD test ! -d /data/nginx/www/owncloud && \
+CMD test ! -f /data/nginx/www/occ && \
+
+	echo 'Waiting for Nginx and MariaDB to get ready...' && \
 
 # Wait for Nginx container to initialize
 
 	while test ! -d /data/nginx; do sleep 1; done && \
 
-# Wait for MariaDB container to start
+# Wait for MariaDB container to start (120 seconds maximum)
 
-	while ! mysqladmin --host=mysql --user=root --password=`cat /data/mysql/root_password` ping; do sleep 1; done && \
+	mysqladmin --host=mysql --user=root --password=$(cat /data/mysql/root_password) --wait=120 ping && \
 
 # Copy default Nginx config
 
@@ -61,16 +63,18 @@ CMD test ! -d /data/nginx/www/owncloud && \
 
 # Copy ownCloud files
 
-	cp -a /dist/owncloud /data/nginx/www && \
+	cp -a /dist/owncloud/. /data/nginx/www && \
 
 # Create data directory
 
-	mkdir /data/nginx/www/owncloud/data && \
+	mkdir /data/nginx/www/data && \
 
 # Fix permissions as recommended by ownCloud
 
-	sh /data/nginx/www/owncloud/strict-permissions.sh && \
+	sh /data/nginx/www/strict-permissions.sh && \
 
 # Create DB table
 
-	echo "CREATE DATABASE owncloud" | mysql -h mysql -u root -p$(cat /data/mysql/root_password)
+	echo "CREATE DATABASE owncloud" | mysql -h mysql -u root -p$(cat /data/mysql/root_password) && \
+
+	echo 'ownCloud installed, reboot mariadb and nginx instances in order to apply configuration changes'
