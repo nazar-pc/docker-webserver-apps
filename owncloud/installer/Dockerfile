@@ -24,8 +24,8 @@ RUN OWNCLOUD_VERSION=9.0.1 && \
 
 COPY mysql.cnf /dist/mysql.cnf
 COPY nginx.conf /dist/nginx.conf
-COPY strict-permissions.sh /dist/owncloud/strict-permissions.sh
-COPY relax-permissions.sh /dist/owncloud/relax-permissions.sh
+COPY strict-permissions.sh /dist/strict-permissions.sh
+COPY relax-permissions.sh /dist/relax-permissions.sh
 COPY autoconfig.php /dist/owncloud/config/autoconfig.php
 
 # At first we'll check if ownCloud already installed, if so - stop everything
@@ -64,6 +64,8 @@ CMD test ! -f /data/nginx/www/occ && \
 # Copy ownCloud files
 
 	cp -a /dist/owncloud/. /data/nginx/www && \
+	cp /dist/strict-permissions.sh /data/nginx/strict-permissions.sh && \
+	cp /dist/relax-permissions.sh /data/nginx/relax-permissions.sh && \
 
 # Create data directory
 
@@ -71,7 +73,7 @@ CMD test ! -f /data/nginx/www/occ && \
 
 # Fix permissions as recommended by ownCloud
 
-	sh /data/nginx/www/strict-permissions.sh && \
+	sh /dist/strict-permissions.sh && \
 
 # Create DB table
 

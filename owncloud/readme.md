@@ -123,13 +123,14 @@ docker exec -it examplecom_php_1 bash
 
 Afterwards relax permissions temporary:
 ```bash
-sh /data/nginx/www/relax-permissions.sh
+sh /data/nginx/relax-permissions.sh
 ```
 
 Upgrade your instance in any way (from administration interface, for instance).
 After upgrade apply strict permissions again:
 ```bash
-sh /data/nginx/www/strict-permissions.sh
+sh /data/nginx/strict-permissions.sh
 ```
+Do not forget to check changes in Nginx configuration and `/data/nginx/relax-permissions.sh`/`/data/nginx/strict-permissions.sh`, since important changes might occur in those occasionally.
 
 That is it!
