@@ -1,4 +1,4 @@
-FROM nazarpc/webserver-apps:owncloud-php-fpm
+FROM nazarpc/webserver-apps:nextcloud-php-fpm
 MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 ENV TERM=xterm

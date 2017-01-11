@@ -1,11 +1,11 @@
 FROM nazarpc/webserver:php-fpm
 MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
-# Set desired ownCloud version
+# Set desired NextCloud version
 
-RUN OWNCLOUD_VERSION=9.0.1 && \
+RUN NEXTCLOUD=11.0.0 && \
 
-# We'll need bzip2 to extract downloaded ownCloud distributive and mysql-client to create DB
+# We'll need bzip2 to extract downloaded NextCloud distributive and mysql-client to create DB
 
 	apt-get update && \
 	apt-get upgrade -y && \
@@ -18,17 +18,17 @@ RUN OWNCLOUD_VERSION=9.0.1 && \
 	mkdir /dist && \
 	cd /dist && \
 
-# Download and extract ownCloud
+# Download and extract NextCloud
 
-	curl https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.tar.bz2 | tar --extract --bzip2 --file -
+	curl https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD}.tar.bz2 | tar --extract --bzip2 --file -
 
 COPY mysql.cnf /dist/mysql.cnf
 COPY nginx.conf /dist/nginx.conf
 COPY strict-permissions.sh /dist/strict-permissions.sh
 COPY relax-permissions.sh /dist/relax-permissions.sh
-COPY autoconfig.php /dist/owncloud/config/autoconfig.php
+COPY autoconfig.php /dist/nextcloud/config/autoconfig.php
 
-# At first we'll check if ownCloud already installed, if so - stop everything
+# At first we'll check if NextCloud already installed, if so - stop everything
 
 CMD test ! -f /data/nginx/www/occ && \
 
@@ -61,9 +61,9 @@ CMD test ! -f /data/nginx/www/occ && \
 		) \
 	) && \
 
-# Copy ownCloud files
+# Copy NextCloud files
 
-	cp -a /dist/owncloud/. /data/nginx/www && \
+	cp -a /dist/nextcloud/. /data/nginx/www && \
 	cp /dist/strict-permissions.sh /data/nginx/strict-permissions.sh && \
 	cp /dist/relax-permissions.sh /data/nginx/relax-permissions.sh && \
 
@@ -71,12 +71,12 @@ CMD test ! -f /data/nginx/www/occ && \
 
 	mkdir /data/nginx/www/data && \
 
-# Fix permissions as recommended by ownCloud
+# Fix permissions as recommended by NextCloud
 
 	sh /dist/strict-permissions.sh && \
 
 # Create DB table
 
-	echo "CREATE DATABASE owncloud" | mysql -h mysql -u root -p$(cat /data/mysql/root_password) && \
+	echo "CREATE DATABASE nextcloud" | mysql -h mysql -u root -p$(cat /data/mysql/root_password) && \
 
-	echo 'ownCloud installed, reboot mariadb and nginx instances in order to apply configuration changes'
+	echo 'NextCloud installed, reboot mariadb and nginx instances in order to apply configuration changes'

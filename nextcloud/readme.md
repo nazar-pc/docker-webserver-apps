@@ -1,9 +1,9 @@
-# [ownCloud](https://owncloud.org/) - A personal cloud which runs on your own server
+# [NextCloud](https://nextcloud.com/) - A safe home for all your data
 
 There are two packages here:
-* nazarpc/webserver-apps:owncloud-installer - One-time ownCloud installer
-* nazarpc/webserver-apps:owncloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with MySQL extension and LibreOffice
-* nazarpc/webserver-apps:owncloud-cron - `nazarpc/webserver-apps:owncloud-php-fpm` with defaults to run ownCloud cron command every 10 minutes
+* nazarpc/webserver-apps:nextcloud-installer - One-time NextCloud installer
+* nazarpc/webserver-apps:nextcloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with MySQL extension and LibreOffice
+* nazarpc/webserver-apps:nextcloud-cron - `nazarpc/webserver-apps:nextcloud-php-fpm` with defaults to run NextCloud cron command every 10 minutes
 
 
 At first you'll need to create persistent data-only container that will store all files, databases, ssh keys and settings of all these things:
@@ -22,7 +22,7 @@ Now create `docker-compose.yml` inside with following contents:
 
 ```yml
 cron:
-  image: nazarpc/webserver-apps:owncloud-cron
+  image: nazarpc/webserver-apps:nextcloud-cron
   links:
     - mariadb:mysql
   restart: always
@@ -58,7 +58,7 @@ nginx:
 
 # NOTE: this container is needed only once, so you can remove or comment-out it after installation
 installer:
-  image: nazarpc/webserver-apps:owncloud-installer
+  image: nazarpc/webserver-apps:nextcloud-installer
   links:
     - mariadb:mysql
   volumes_from:
@@ -70,7 +70,7 @@ installer:
 
 # NOTE: we use modified image based on nazarpc/webserver:php-fpm with MySQL extension and LibreOffice pre-installed
 php:
-  image: nazarpc/webserver-apps:owncloud-php-fpm
+  image: nazarpc/webserver-apps:nextcloud-php-fpm
   links:
     - mariadb:mysql
   restart: always
@@ -101,21 +101,21 @@ When you're done with editing:
 docker-compose up -d
 docker-compose logs installer
 ```
-As soon as you see message that ownCloud was installed, reboot mariadb and nginx to apply configuration changes:
+As soon as you see message that NextCloud was installed, reboot mariadb and nginx to apply configuration changes:
 ```
 docker-compose restart mariadb nginx
 ```
 
 Restart is needed to apply changed MariaDB and Nginx configurations, done by installer.
 
-Now go to Web UI, enter login and password for ownCloud administrator.
-That is it, you have ownCloud up and running.
+Now go to Web UI, enter login and password for NextCloud administrator.
+That is it, you have NextCloud up and running.
 
 Go to [WebServer repository](https://github.com/nazar-pc/docker-webserver) for details about backups, upgrade process and other things since they are the same (do not forget that here we use more packages and different set of them, so you to pull all images accordingly).
-ownCloud itself can be upgraded from Web UI or through CLI, follow official guide according to your ownCloud version.
+NextCloud itself can be upgraded from Web UI or through CLI, follow official guide according to your NextCloud version.
 
-# ownCloud upgrade
-When you want to upgrade ownCloud you'll need to relax permissions since they are intentionally strict for production installation.
+# NextCloud upgrade
+When you want to upgrade NextCloud you'll need to relax permissions since they are intentionally strict for production installation.
 So, before upgrade enter any of containers as root user from terminal on server, for instance, in such way:
 ```bash
 docker exec -it examplecom_php_1 bash

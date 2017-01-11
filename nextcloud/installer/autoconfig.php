@@ -2,7 +2,7 @@
 $AUTOCONFIG = [
 	'directory'      => '/data/nginx/www/data',
 	'dbtype'         => 'mysql',
-	'dbname'         => 'owncloud',
+	'dbname'         => 'nextcloud',
 	'dbhost'         => 'mysql',
 	'dbtableprefix'  => 'oc_',
 	'dbuser'         => 'root',

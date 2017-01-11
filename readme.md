@@ -5,4 +5,4 @@ The main intention of creating WebServer was to create set of separate stateless
 This repository is the next step forward to provide automated installation of useful applications by simple one-time plugging of container to your WebServer setup.
 
 # Supported applications
-* [ownCloud](https://owncloud.org/) - A personal cloud which runs on your own server ([how to use](https://github.com/nazar-pc/docker-webserver-apps/tree/master/owncloud))
+* [NextCloud](https://nextcloud.com/) - A safe home for all your data ([how to use](https://github.com/nazar-pc/docker-webserver-apps/tree/master/nextcloud))
