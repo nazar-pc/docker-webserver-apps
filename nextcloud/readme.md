@@ -1,6 +1,6 @@
 # [NextCloud](https://nextcloud.com/) - A safe home for all your data
 
-There are two packages here:
+There are 3 images here:
 * nazarpc/webserver-apps:nextcloud-installer - One-time NextCloud installer
 * nazarpc/webserver-apps:nextcloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with MySQL extension and LibreOffice
 * nazarpc/webserver-apps:nextcloud-cron - `nazarpc/webserver-apps:nextcloud-php-fpm` with defaults to run NextCloud cron command every 10 minutes
