@@ -2,7 +2,7 @@
 
 There are 3 images here:
 * nazarpc/webserver-apps:nextcloud-installer - One-time NextCloud installer
-* nazarpc/webserver-apps:nextcloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with MySQL extension and LibreOffice
+* nazarpc/webserver-apps:nextcloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with LibreOffice
 * nazarpc/webserver-apps:nextcloud-cron - `nazarpc/webserver-apps:nextcloud-php-fpm` with defaults to run NextCloud cron command every 10 minutes
 
 
@@ -68,7 +68,7 @@ installer:
 #    - /ssl.crt:/dist/crt:ro
 #    - /ssl.key:/dist/key:ro
 
-# NOTE: we use modified image based on nazarpc/webserver:php-fpm with MySQL extension and LibreOffice pre-installed
+# NOTE: we use modified image based on nazarpc/webserver:php-fpm with LibreOffice pre-installed
 php:
   image: nazarpc/webserver-apps:nextcloud-php-fpm
   links:
