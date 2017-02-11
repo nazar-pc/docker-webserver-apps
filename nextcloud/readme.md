@@ -99,7 +99,7 @@ Now customize it as you like.
 When you're done with editing:
 ```
 docker-compose up -d
-docker-compose logs installer
+docker-compose logs -f installer
 ```
 As soon as you see message that NextCloud was installed, reboot mariadb and nginx to apply configuration changes:
 ```
