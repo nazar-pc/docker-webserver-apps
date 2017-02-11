@@ -21,77 +21,79 @@ cd example.com
 Now create `docker-compose.yml` inside with following contents:
 
 ```yml
-cron:
-  image: nazarpc/webserver-apps:nextcloud-cron
-  links:
-    - mariadb:mysql
-  restart: always
-  volumes_from:
-    - data
+version: '2'
+services:
+  cron:
+    image: nazarpc/webserver-apps:nextcloud-cron
+    links:
+      - mariadb:mysql
+    restart: always
+    volumes_from:
+      - data
 
-data:
-  image: nazarpc/webserver:data
-  volumes_from:
-    - example.com
+  data:
+    image: nazarpc/webserver:data
+    volumes_from:
+      - example.com
 
-logrotate:
-  image: nazarpc/webserver:logrotate
-  restart: always
-  volumes_from:
-    - data
+  logrotate:
+    image: nazarpc/webserver:logrotate
+    restart: always
+    volumes_from:
+      - data
 
-mariadb:
-  image: nazarpc/webserver:mariadb
-  restart: always
-  volumes_from:
-    - data
+  mariadb:
+    image: nazarpc/webserver:mariadb
+    restart: always
+    volumes_from:
+      - data
 
-nginx:
-  image: nazarpc/webserver:nginx
-  links:
-    - php
-#  ports:
-#    - {ip where to bind}:{port on localhost where to bind}:80
-  restart: always
-  volumes_from:
-    - data
+  nginx:
+    image: nazarpc/webserver:nginx
+    links:
+      - php
+#    ports:
+#      - {ip where to bind}:{port on localhost where to bind}:80
+    restart: always
+    volumes_from:
+      - data
 
-# NOTE: this container is needed only once, so you can remove or comment-out it after installation
-installer:
-  image: nazarpc/webserver-apps:nextcloud-installer
-  links:
-    - mariadb:mysql
-  volumes_from:
-    - data
-# Uncomment following lines for HTTPS setup, correct /ssl.crt and /ssl.key accordingly to your full paths to SSL/TLS certificates on host
-#  volumes:
-#    - /ssl.crt:/dist/crt:ro
-#    - /ssl.key:/dist/key:ro
+#   NOTE: this container is needed only once, so you can remove or comment-out it after installation
+  installer:
+    image: nazarpc/webserver-apps:nextcloud-installer
+    links:
+      - mariadb:mysql
+    volumes_from:
+      - data
+#   Uncomment following lines for HTTPS setup, correct /ssl.crt and /ssl.key accordingly to your full paths to SSL/TLS certificates on host
+#    volumes:
+#      - /ssl.crt:/dist/crt:ro
+#      - /ssl.key:/dist/key:ro
 
-# NOTE: we use modified image based on nazarpc/webserver:php-fpm with LibreOffice pre-installed
-php:
-  image: nazarpc/webserver-apps:nextcloud-php-fpm
-  links:
-    - mariadb:mysql
-  restart: always
-  volumes_from:
-    - data
+#   NOTE: we use modified image based on nazarpc/webserver:php-fpm with LibreOffice pre-installed
+  php:
+    image: nazarpc/webserver-apps:nextcloud-php-fpm
+    links:
+      - mariadb:mysql
+    restart: always
+    volumes_from:
+      - data
 
-#phpmyadmin:
-#  image: nazarpc/phpmyadmin
-#  links:
-#    - mariadb:mysql
-#  restart: always
-#  ports:
-#    - {ip where to bind}:{port on localhost where to bind}:80
+#  phpmyadmin:
+#    image: nazarpc/phpmyadmin
+#    links:
+#      - mariadb:mysql
+#    restart: always
+#    ports:
+#      - {ip where to bind}:{port on localhost where to bind}:80
 
-ssh:
-  image: nazarpc/webserver:ssh
-  restart: always
-  volumes_from:
-    - data
-#  ports:
-#    - {ip where to bind}:{port on localhost where to bind}:22
+  ssh:
+    image: nazarpc/webserver:ssh
+    restart: always
+    volumes_from:
+      - data
+#    ports:
+#      - {ip where to bind}:{port on localhost where to bind}:22
 ```
 
 Now customize it as you like.
