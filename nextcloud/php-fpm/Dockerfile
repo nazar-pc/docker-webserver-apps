@@ -1,4 +1,4 @@
-FROM nazarpc/webserver:php-fpm
+FROM nazarpc/webserver:php-fpm-v1
 MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 RUN \

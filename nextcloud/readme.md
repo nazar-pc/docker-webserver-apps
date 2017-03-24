@@ -2,13 +2,13 @@
 
 There are 3 images here:
 * nazarpc/webserver-apps:nextcloud-installer - One-time NextCloud installer
-* nazarpc/webserver-apps:nextcloud-php-fpm - Modified `nazarpc/webserver:php-fpm` with LibreOffice
-* nazarpc/webserver-apps:nextcloud-cron - `nazarpc/webserver-apps:nextcloud-php-fpm` with defaults to run NextCloud cron command every 10 minutes
+* nazarpc/webserver-apps:nextcloud-php-fpm - Modified `nazarpc/webserver:php-fpm-v1` with LibreOffice
+* nazarpc/webserver-apps:nextcloud-cron - the same as `nazarpc/webserver-apps:nextcloud-php-fpm` with defaults to run NextCloud cron command every 10 minutes
 
 
 At first you'll need to create persistent data-only container that will store all files, databases, ssh keys and settings of all these things:
 ```
-docker run --name example.com nazarpc/webserver:data
+docker run --name example.com nazarpc/webserver:data-v1
 ```
 This container will start and stop immediately, that is OK.
 
@@ -32,24 +32,24 @@ services:
       - data
 
   data:
-    image: nazarpc/webserver:data
+    image: nazarpc/webserver:data-v1
     volumes_from:
       - example.com
 
   logrotate:
-    image: nazarpc/webserver:logrotate
+    image: nazarpc/webserver:logrotate-v1
     restart: always
     volumes_from:
       - data
 
   mariadb:
-    image: nazarpc/webserver:mariadb
+    image: nazarpc/webserver:mariadb-v1
     restart: always
     volumes_from:
       - data
 
   nginx:
-    image: nazarpc/webserver:nginx
+    image: nazarpc/webserver:nginx-v1
     links:
       - php
 #    ports:
@@ -70,7 +70,7 @@ services:
 #      - /ssl.crt:/dist/crt:ro
 #      - /ssl.key:/dist/key:ro
 
-#   NOTE: we use modified image based on nazarpc/webserver:php-fpm with LibreOffice pre-installed
+#   NOTE: we use modified image based on nazarpc/webserver:php-fpm-v1 with LibreOffice pre-installed
   php:
     image: nazarpc/webserver-apps:nextcloud-php-fpm
     links:
@@ -80,7 +80,7 @@ services:
       - data
 
 #  phpmyadmin:
-#    image: nazarpc/phpmyadmin
+#    image: nazarpc/webserver:phpmyadmin-v1
 #    links:
 #      - mariadb:mysql
 #    restart: always
@@ -88,7 +88,7 @@ services:
 #      - {ip where to bind}:{port on localhost where to bind}:80
 
   ssh:
-    image: nazarpc/webserver:ssh
+    image: nazarpc/webserver:ssh-v1
     restart: always
     volumes_from:
       - data
