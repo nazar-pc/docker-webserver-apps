@@ -89,6 +89,8 @@ services:
 
   ssh:
     image: nazarpc/webserver:ssh-v1
+    links:
+      - mariadb:mysql
     restart: always
     volumes_from:
       - data
