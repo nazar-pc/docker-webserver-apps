@@ -34,7 +34,7 @@ services:
   data:
     image: nazarpc/webserver:data-v1
     volumes_from:
-      - example.com
+      - container:example.com
 
   logrotate:
     image: nazarpc/webserver:logrotate-v1
