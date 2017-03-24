@@ -28,6 +28,8 @@ COPY strict-permissions.sh /dist/strict-permissions.sh
 COPY relax-permissions.sh /dist/relax-permissions.sh
 COPY autoconfig.php /dist/nextcloud/config/autoconfig.php
 
+ENTRYPOINT []
+
 # At first we'll check if NextCloud already installed, if so - stop everything
 
 CMD test ! -f /data/nginx/www/occ && \
