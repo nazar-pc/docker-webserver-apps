@@ -94,6 +94,8 @@ services:
       - data
 #    ports:
 #      - {ip where to bind}:{port on localhost where to bind}:22
+#    environment:
+#      PUBLIC_KEY: '{your public SSH key}'
 ```
 
 Now customize it as you like.
