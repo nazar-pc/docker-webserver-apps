@@ -3,7 +3,7 @@ MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 # Set desired NextCloud version
 
-RUN NEXTCLOUD=11.0.2 && \
+RUN NEXTCLOUD=11.0.3 && \
 
 # We'll need bzip2 to extract downloaded NextCloud distributive and mysql-client to create DB
 
