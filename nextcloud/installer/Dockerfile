@@ -3,7 +3,7 @@ MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 # Set desired NextCloud version
 
-RUN NEXTCLOUD=11.0.3 && \
+RUN NEXTCLOUD=12.0.0 && \
 
 # We'll need bzip2 to extract downloaded NextCloud distributive and mysql-client to create DB
 
@@ -24,8 +24,6 @@ RUN NEXTCLOUD=11.0.3 && \
 
 COPY mysql.cnf /dist/mysql.cnf
 COPY nginx.conf /dist/nginx.conf
-COPY strict-permissions.sh /dist/strict-permissions.sh
-COPY relax-permissions.sh /dist/relax-permissions.sh
 COPY autoconfig.php /dist/nextcloud/config/autoconfig.php
 
 ENTRYPOINT []
@@ -66,16 +64,14 @@ CMD test ! -f /data/nginx/www/occ && \
 # Copy NextCloud files
 
 	cp -a /dist/nextcloud/. /data/nginx/www && \
-	cp /dist/strict-permissions.sh /data/nginx/strict-permissions.sh && \
-	cp /dist/relax-permissions.sh /data/nginx/relax-permissions.sh && \
 
 # Create data directory
 
 	mkdir /data/nginx/www/data && \
 
-# Fix permissions as recommended by NextCloud
+# Fix permissions
 
-	sh /dist/strict-permissions.sh && \
+	chown -R git:git /data/nginx/www/ && \
 
 # Create DB table
 

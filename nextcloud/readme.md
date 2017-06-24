@@ -121,22 +121,15 @@ Go to [WebServer repository](https://github.com/nazar-pc/docker-webserver) for d
 NextCloud itself can be upgraded from Web UI or through CLI, follow official guide according to your NextCloud version.
 
 # NextCloud upgrade
-When you want to upgrade NextCloud you'll need to relax permissions since they are intentionally strict for production installation.
-So, before upgrade enter any of containers as root user from terminal on server, for instance, in such way:
+When you want to upgrade from NextCloud 11 to Nextcloud 12 you'll need to relax permissions since were intentionally strict for production installation, but [are not such in latest release](https://github.com/nextcloud/documentation/pull/431):
 ```bash
 docker exec -it examplecom_php_1 bash
-```
-
-Afterwards relax permissions temporary:
-```bash
-sh /data/nginx/relax-permissions.sh
+# And inside of the container
+chown -R git:git /data/nginx/www/
 ```
 
 Upgrade your instance in any way (from administration interface, for instance).
-After upgrade apply strict permissions again:
-```bash
-sh /data/nginx/strict-permissions.sh
-```
-Do not forget to check changes in Nginx configuration and `/data/nginx/relax-permissions.sh`/`/data/nginx/strict-permissions.sh`, since important changes might occur in those occasionally.
+
+Do not forget to check changes in Nginx configuration since important changes might occur in those occasionally.
 
 That is it!
