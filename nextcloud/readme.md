@@ -107,7 +107,7 @@ When you're done with editing:
 docker-compose up -d
 docker-compose logs -f installer
 ```
-As soon as you see message that NextCloud was installed, reboot mariadb and nginx to apply configuration changes:
+As soon as you see message that NextCloud was installed, restart mariadb and nginx to apply configuration changes:
 ```
 docker-compose restart mariadb nginx
 ```
@@ -121,14 +121,7 @@ Go to [WebServer repository](https://github.com/nazar-pc/docker-webserver) for d
 NextCloud itself can be upgraded from Web UI or through CLI, follow official guide according to your NextCloud version.
 
 # NextCloud upgrade
-When you want to upgrade from NextCloud 11 to Nextcloud 12 you'll need to relax permissions since were intentionally strict for production installation, but [are not such in latest release](https://github.com/nextcloud/documentation/pull/431):
-```bash
-docker exec -it examplecom_php_1 bash
-# And inside of the container
-chown -R git:git /data/nginx/www/
-```
-
-Upgrade your instance in any way (from administration interface, for instance).
+Upgrade your instance in any way you like (from administration GUI, for instance).
 
 Do not forget to check changes in Nginx configuration since important changes might occur in those occasionally.
 

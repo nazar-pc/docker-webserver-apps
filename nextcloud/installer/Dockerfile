@@ -3,25 +3,18 @@ MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 # Set desired NextCloud version
 
-RUN NEXTCLOUD=12.0.2 && \
-
+RUN NEXTCLOUD=14.0.3 && \
 # We'll need bzip2 to extract downloaded NextCloud distributive and mysql-client to create DB
-
 	apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install --no-install-recommends -y bzip2 mysql-client && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
-
 # Create directory where distributive will be stored
-
 	mkdir /dist && \
 	cd /dist && \
-
 # Download and extract NextCloud
-
 	curl https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD}.tar.bz2 | tar --extract --bzip2 --file -
-
 COPY mysql.cnf /dist/mysql.cnf
 COPY nginx.conf /dist/nginx.conf
 COPY autoconfig.php /dist/nextcloud/config/autoconfig.php
