@@ -3,7 +3,7 @@ MAINTAINER Nazar Mokrynskyi <nazar@mokrynskyi.com>
 
 # Set desired NextCloud version
 
-RUN NEXTCLOUD=14.0.6 && \
+RUN NEXTCLOUD=15.0.2 && \
 # We'll need bzip2 to extract downloaded NextCloud distributive and mysql-client to create DB
 	apt-get update && \
 	apt-get upgrade -y && \
